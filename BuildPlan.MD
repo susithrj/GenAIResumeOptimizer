@@ -1221,8 +1221,9 @@ ats-optimizer/
     └── formatter.py
 One file added. Nothing else touched.
 
+DAY 16 - ADD FAST API TO CALL FROM WEB
 
-
+postman check - with plain text copied resume cause difficult to attach and test PDF
 
 
 **Commit structure:**
