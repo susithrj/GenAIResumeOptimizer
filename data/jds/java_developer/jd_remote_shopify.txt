@@ -1,0 +1,32 @@
+Senior Backend Developer — Shopify
+Remote (APAC) | Full Time
+
+About the Role:
+Shopify powers over 1 million businesses worldwide. We are hiring Senior Backend Developers for our Checkout and Payments team, working remotely from APAC timezone.
+
+Requirements:
+- 5+ years backend development experience
+- Strong Ruby on Rails or Java or Go skills
+- Distributed systems at scale
+- MySQL, Redis, Kafka
+- Experience with high-availability production systems
+- REST and GraphQL API design
+- Strong testing practices
+
+Nice to have:
+- E-commerce or payments domain experience
+- Experience with Shopify APIs
+- Open source contributions
+- Experience working in fully remote, async teams
+
+Responsibilities:
+- Own and evolve checkout and payment features
+- Write production-quality code with tests
+- Review code and mentor teammates
+- Participate in architecture discussions
+- Join on-call rotation for production reliability
+
+Company: Shopify Inc.
+Location: Remote (APAC preferred)
+Type: Full Time | Remote
+Salary: USD 120,000 – 160,000 (location adjusted)

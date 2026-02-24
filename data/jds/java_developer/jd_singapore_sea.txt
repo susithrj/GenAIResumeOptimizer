@@ -1,0 +1,32 @@
+Senior Software Engineer, Backend — Sea Group (Shopee)
+Singapore | Full Time
+
+About the Role:
+Sea Group (parent of Shopee, SeaMoney, Garena) is hiring Senior Backend Engineers for Shopee's order management and fulfilment systems handling hundreds of millions of orders.
+
+Requirements:
+- 5+ years backend software engineering
+- Java or Go or Python (Java preferred for this role)
+- Large-scale distributed system experience
+- MySQL, Redis
+- Strong understanding of concurrency and system design
+- Experience with high-QPS, low-latency systems
+- Microservices and API design
+
+Nice to have:
+- E-commerce or logistics domain knowledge
+- Experience handling flash sale / high-traffic events
+- Knowledge of Flink or Spark for stream processing
+- Mandarin language skills (helpful for team collaboration)
+
+Responsibilities:
+- Design and build order processing and inventory systems
+- Lead technical design of new features
+- Handle on-call incidents and production issues
+- Coach and mentor team members
+- Collaborate with teams across Singapore, China, India
+
+Company: Sea Group (Shopee)
+Location: Singapore
+Type: Full Time
+Salary: SGD 9,000 – 15,000/month + RSU

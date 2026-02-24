@@ -1,0 +1,31 @@
+Senior Backend Engineer (Java) — MobME / Myriad Connect
+Colombo, Sri Lanka | Full Time
+
+About the Role:
+Myriad Connect provides mobile messaging and engagement solutions for global telecom operators. We need a Senior Backend Engineer with strong Java skills to build high-throughput messaging infrastructure.
+
+Requirements:
+- 4+ years Java backend experience
+- Spring Boot and reactive programming (Project Reactor / WebFlux)
+- High-volume messaging system experience
+- Redis and caching strategies
+- Kafka or RabbitMQ
+- PostgreSQL
+- Linux server environment
+
+Nice to have:
+- SMPP protocol knowledge
+- Experience handling 1M+ messages per day
+- Kubernetes deployment experience
+- Monitoring with Prometheus and Grafana
+
+Responsibilities:
+- Build and optimize message processing pipelines
+- Design APIs for telecom operator integrations
+- Maintain 99.9% uptime SLAs
+- Performance test and tune backend services
+- On-call rotation for production support
+
+Company: Myriad Connect
+Location: Colombo, Sri Lanka
+Type: Full Time

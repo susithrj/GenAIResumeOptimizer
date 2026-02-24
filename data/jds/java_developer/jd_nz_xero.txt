@@ -1,0 +1,34 @@
+Senior Software Engineer — Xero
+Auckland, New Zealand | Full Time | Hybrid
+
+About the Role:
+Xero is the world's leading cloud accounting platform for small businesses. We're hiring Senior Software Engineers to join our platform engineering teams in Auckland building the core accounting engine.
+
+Requirements:
+- 5+ years software engineering experience
+- Strong .NET or Java backend skills
+- AWS cloud services
+- Microservices and event-driven architecture
+- PostgreSQL or SQL Server
+- CI/CD and DevOps practices
+- TDD and automated testing culture
+- Experience with SaaS multi-tenant platforms
+
+Nice to have:
+- Experience in accounting or financial software
+- Knowledge of NZ or Australian business regulations
+- GraphQL API experience
+- Terraform infrastructure as code
+
+Responsibilities:
+- Build and evolve core platform services
+- Drive engineering excellence and best practices
+- Collaborate with product managers and designers
+- Participate in on-call and incident response
+- Contribute to engineering community practices
+
+Company: Xero
+Location: Auckland, New Zealand
+Type: Full Time
+Salary: NZD 130,000 – 160,000
+Visa sponsorship available for skilled candidates

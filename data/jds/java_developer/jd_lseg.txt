@@ -1,0 +1,31 @@
+Software Engineer (Java) — LSEG Technology (London Stock Exchange Group)
+Colombo, Sri Lanka | Full Time | Hybrid
+
+About the Role:
+LSEG (London Stock Exchange Group) has a large technology center in Colombo. We are hiring Java Software Engineers for our market data and trading analytics platforms.
+
+Requirements:
+- 4+ years Java development experience
+- Spring Boot, core Java concurrency
+- Financial data systems or trading platform experience preferred
+- Low-latency application development
+- FIX protocol familiarity
+- Oracle or SQL Server databases
+- Unix/Linux environments
+
+Nice to have:
+- Knowledge of FTSE or Russell index products
+- Experience with market data feeds (Reuters Elektron)
+- LMAX Disruptor or similar high-performance Java libraries
+- Python scripting for data analysis
+
+Responsibilities:
+- Develop and maintain market data distribution systems
+- Optimize latency-critical data processing pipelines
+- Work with London-based teams in GMT timezone overlap
+- Write unit and integration tests
+- Document system designs
+
+Company: LSEG Technology
+Location: Colombo, Sri Lanka (Hybrid)
+Type: Full Time

@@ -1,0 +1,32 @@
+Senior Java Developer — Virtusa
+Colombo, Sri Lanka | Full Time | Hybrid
+
+About the Role:
+Virtusa is a global technology services company. We are looking for a Senior Java Developer to join our banking and financial services delivery unit, building core banking modernization solutions for global clients.
+
+Requirements:
+- 5+ years Java enterprise development
+- Spring Boot, Spring Cloud, Spring Batch
+- Experience with banking or fintech systems preferred
+- Microservices and API gateway experience
+- AWS or Azure certification preferred
+- Kafka or IBM MQ messaging experience
+- Oracle or PostgreSQL databases
+- Performance tuning and profiling skills
+
+Nice to have:
+- Experience with TEMENOS or Finastra banking products
+- Knowledge of ISO 20022 payment standards
+- Exposure to DevSecOps practices
+- TOGAF or similar architecture certification
+
+Responsibilities:
+- Design and develop core banking backend services
+- Engage with client stakeholders to gather requirements
+- Lead technical delivery for sub-modules
+- Code review and quality assurance
+- Prepare technical design documentation
+
+Company: Virtusa Corporation
+Location: Colombo, Sri Lanka (Hybrid)
+Type: Full Time

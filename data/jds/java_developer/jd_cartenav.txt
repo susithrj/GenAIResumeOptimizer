@@ -1,0 +1,34 @@
+Senior Software Developer — CarteNav Solutions
+Halifax, Nova Scotia, Canada | Full Time | Remote Eligible
+
+About the Role:
+CarteNav Solutions develops mission management software for military and government aviation customers. We are hiring a Senior Software Developer to join our platform team building C2/ISR mission systems.
+
+Requirements:
+- 5+ years of software development experience
+- Strong Java skills (Java 11+)
+- Experience with complex desktop or distributed applications
+- Knowledge of software architecture patterns
+- RESTful API design
+- Relational database experience (PostgreSQL preferred)
+- Git, Maven/Gradle
+- Experience in Agile/Scrum teams
+
+Nice to have:
+- Experience with military or defense software systems
+- Knowledge of NATO STANAG standards
+- GIS or mapping system experience (OpenLayers, ATAK)
+- Security clearance (or ability to obtain Canadian security clearance)
+- Experience with JavaFX or Swing
+
+Responsibilities:
+- Design and develop features for AIMS mission management system
+- Collaborate with systems engineers and UX designers
+- Write and maintain automated tests
+- Participate in code reviews and architecture discussions
+- Support field deployments and customer integrations
+
+Company: CarteNav Solutions
+Location: Halifax, NS, Canada (Remote eligible for exceptional candidates)
+Type: Full Time
+Salary: CAD 90,000 – 120,000 based on experience

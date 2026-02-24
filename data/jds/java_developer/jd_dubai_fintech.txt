@@ -1,0 +1,33 @@
+Senior Java Backend Engineer — Tabby (Fintech)
+Dubai, UAE | Full Time | Hybrid
+
+About the Role:
+Tabby is the Middle East's leading buy-now-pay-later platform. We are scaling rapidly and need Senior Java Backend Engineers to build our payments infrastructure and merchant integration platform.
+
+Requirements:
+- 5+ years backend engineering experience
+- Java and Spring Boot expertise
+- Microservices architecture and event-driven design
+- Kafka, RabbitMQ or similar messaging
+- AWS (EKS, RDS, Lambda, SQS)
+- Redis for caching and session management
+- PostgreSQL database
+- Strong understanding of payment systems and PCI-DSS
+
+Nice to have:
+- Experience in BNPL, lending, or payment systems
+- Knowledge of ISO 8583 payment protocol
+- Experience with Terraform or CloudFormation
+- Arabic language (not required)
+
+Responsibilities:
+- Build scalable payment processing microservices
+- Design merchant integration APIs
+- Collaborate with product and data teams
+- Drive technical excellence and code reviews
+- Participate in on-call rotation
+
+Company: Tabby
+Location: Dubai, UAE
+Type: Full Time | Hybrid
+Salary: AED 25,000 – 35,000/month + equity

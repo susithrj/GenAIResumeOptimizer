@@ -1,0 +1,31 @@
+Senior Software Engineer — 99x
+Colombo, Sri Lanka | Full Time | Remote Friendly
+
+About the Role:
+99x is a product engineering company building software products for Scandinavian markets. We are looking for a Senior Software Engineer to join our growing engineering teams working on SaaS products.
+
+Requirements:
+- 4+ years of software engineering experience
+- Strong Java and Spring Boot skills
+- Experience with cloud platforms (AWS preferred)
+- Microservices architecture knowledge
+- REST and GraphQL API development
+- SQL and NoSQL databases
+- CI/CD pipeline experience
+
+Nice to have:
+- Experience with React or Angular for full-stack roles
+- Exposure to Nordic business culture or clients
+- Knowledge of GDPR compliance in software design
+- Experience with Agile/Scrum methodologies
+
+Responsibilities:
+- Build and maintain backend services for SaaS products
+- Collaborate with cross-functional teams across time zones
+- Participate in sprint planning and retrospectives
+- Ensure code quality through reviews and automated testing
+- Contribute to architectural decisions
+
+Company: 99x Technology
+Location: Colombo, Sri Lanka
+Type: Full Time | Remote Friendly

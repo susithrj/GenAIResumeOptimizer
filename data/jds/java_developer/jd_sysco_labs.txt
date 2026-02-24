@@ -1,0 +1,33 @@
+Senior Software Engineer (Backend) — Sysco Labs
+Colombo, Sri Lanka | Full Time | Hybrid
+
+About the Role:
+Sysco Labs is the technology arm of Sysco LABS Sri Lanka, building large-scale food distribution platforms. We are hiring a Senior Software Engineer to work on high-throughput backend systems supporting millions of transactions.
+
+Requirements:
+- 5+ years of backend development experience
+- Proficiency in Java and Spring Boot
+- Strong understanding of microservices and distributed systems
+- Experience with AWS (EC2, RDS, S3, Lambda, SQS)
+- Familiarity with Docker and Kubernetes
+- Experience with relational databases (MySQL, PostgreSQL)
+- Knowledge of RESTful API design principles
+- Experience with message brokers (Kafka, SQS)
+
+Nice to have:
+- Experience with event-driven architecture
+- Knowledge of CI/CD tools (Jenkins, GitHub Actions, ArgoCD)
+- Scrum Master or Agile team experience
+- Mentoring experience
+
+Responsibilities:
+- Architect and implement scalable microservices
+- Lead technical design discussions and code reviews
+- Work with product managers to deliver features
+- Ensure system reliability and performance
+- Mentor junior and mid-level engineers
+- Drive DevOps practices within the team
+
+Company: Sysco Labs
+Location: Colombo, Sri Lanka (Hybrid)
+Type: Full Time

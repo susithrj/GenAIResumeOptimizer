@@ -1,0 +1,33 @@
+Senior Java Developer — WSO2
+Colombo, Sri Lanka | Full Time
+
+About the Role:
+WSO2 is looking for a Senior Java Developer to join our platform engineering team. You will be building enterprise-grade integration and identity products used by thousands of companies worldwide.
+
+Requirements:
+- 5+ years Java development experience
+- Strong knowledge of Spring Boot and Spring Cloud
+- Experience with microservices architecture
+- AWS or Azure cloud experience
+- Docker and Kubernetes knowledge
+- REST API design and development
+- PostgreSQL or MySQL experience
+- Experience with OSGi framework is a plus
+
+Nice to have:
+- Experience with Kafka or RabbitMQ
+- Knowledge of CI/CD pipelines (Jenkins, GitHub Actions)
+- Contributions to open source projects
+- Familiarity with WSO2 products (API Manager, Identity Server)
+
+Responsibilities:
+- Design and develop scalable backend services
+- Participate in code reviews and architectural discussions
+- Mentor junior developers
+- Collaborate with product teams to define technical requirements
+- Write unit and integration tests
+- Contribute to open source WSO2 projects
+
+Company: WSO2
+Location: Colombo, Sri Lanka (Hybrid)
+Type: Full Time | Permanent

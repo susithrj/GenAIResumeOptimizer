@@ -1,6 +1,7 @@
 # LangChain core
 langchain
 langchain-openai
+langchain-community
 langgraph
 
 # PDF processing
