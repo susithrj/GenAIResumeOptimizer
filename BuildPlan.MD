@@ -1019,6 +1019,212 @@ python optimize.py --jd data/jds/jd_senior_swe_grab.txt
 4. Write 3 "what's next" bullet points showing product thinking
 5. Clean commit history, push to GitHub
 
+Day 15 — MCP Server
+Goal: Expose your entire pipeline as an MCP server so Claude Desktop can run it from a natural language conversation. Zero UI needed.
+Concepts: MCP protocol, tool definitions, JSON-RPC, Claude Desktop integration
+
+Install
+Add to requirements.txt:
+mcp
+fastmcp
+Then install:
+bashpip install mcp fastmcp
+
+Tasks
+
+Create server.py in project root
+Expose 3 tools: optimize_resume, get_ats_score, get_gap_report
+Add server to claude_desktop_config.json
+Restart Claude Desktop
+Test with a real resume + JD pasted in chat
+
+
+Code
+python# server.py
+from dotenv import load_dotenv
+from mcp.server.fastmcp import FastMCP
+
+from agents.parser import parse_resume
+from agents.jd_parser import parse_jd
+from agents.gap_analyzer import analyze_gaps
+from agents.rewriter import rewrite_resume
+
+load_dotenv()
+
+mcp = FastMCP("ATS Resume Optimizer")
+
+
+@mcp.tool()
+def optimize_resume(resume_text: str, jd_text: str) -> dict:
+    """
+    Full ATS optimization pipeline.
+    Takes raw resume text and job description text.
+    Returns ATS score, missing skills, gap report,
+    and rewritten bullets tailored to the JD.
+    Use this when the user wants their resume optimized
+    for a specific job.
+    """
+    parsed_resume = parse_resume(resume_text)
+    parsed_jd     = parse_jd(jd_text)
+    gaps          = analyze_gaps(
+                        parsed_resume.model_dump(),
+                        parsed_jd.model_dump()
+                    )
+    rewrite       = rewrite_resume(
+                        parsed_resume.model_dump(),
+                        gaps.model_dump(),
+                        parsed_jd.model_dump()
+                    )
+    return {
+        "ats_score":         gaps.ats_score,
+        "missing_skills":    gaps.missing_skills,
+        "weak_sections":     gaps.weak_sections,
+        "rewritten_bullets": rewrite.model_dump()
+    }
+
+
+@mcp.tool()
+def get_ats_score(resume_text: str, jd_text: str) -> dict:
+    """
+    Quick ATS score only. No rewriting.
+    Takes raw resume text and job description text.
+    Returns alignment score from 0-100 and missing skills.
+    Use this when the user just wants to check their score
+    without making any changes to the resume.
+    """
+    parsed_resume = parse_resume(resume_text)
+    parsed_jd     = parse_jd(jd_text)
+    gaps          = analyze_gaps(
+                        parsed_resume.model_dump(),
+                        parsed_jd.model_dump()
+                    )
+    return {
+        "ats_score":      gaps.ats_score,
+        "missing_skills": gaps.missing_skills,
+        "matched_skills": gaps.matched_skills
+    }
+
+
+@mcp.tool()
+def get_gap_report(resume_text: str, jd_text: str) -> dict:
+    """
+    Detailed gap analysis only. No rewriting.
+    Takes raw resume text and job description text.
+    Returns score, missing skills, weak sections,
+    missing keywords, and specific recommendations.
+    Use this when the user wants to understand what
+    is missing before deciding to rewrite.
+    """
+    parsed_resume = parse_resume(resume_text)
+    parsed_jd     = parse_jd(jd_text)
+    gaps          = analyze_gaps(
+                        parsed_resume.model_dump(),
+                        parsed_jd.model_dump()
+                    )
+    return gaps.model_dump()
+
+
+if __name__ == "__main__":
+    mcp.run()
+
+Connect to Claude Desktop
+Find your Claude Desktop config file:
+bash# mac
+~/Library/Application Support/Claude/claude_desktop_config.json
+
+# windows
+%APPDATA%\Claude\claude_desktop_config.json
+Add your server:
+json{
+  "mcpServers": {
+    "ats-optimizer": {
+      "command": "python",
+      "args": ["/Users/susith/Projects/ATSLLM/server.py"]
+    }
+  }
+}
+Replace the path with your actual project path:
+bash# get your full path
+pwd
+# /Users/susith/Projects/ATSLLM
+Restart Claude Desktop completely after saving the config.
+
+Verify Tools Are Registered
+After restarting Claude Desktop, click the hammer icon (🔨) in the chat input. You should see:
+ats-optimizer
+  • optimize_resume
+  • get_ats_score
+  • get_gap_report
+If tools don't appear check:
+
+Path in config is absolute and correct
+.venv is active when server starts
+No syntax errors in server.py — run python server.py directly to test
+
+
+Test It
+Open Claude Desktop and paste this:
+Here is my resume:
+[paste your full resume text]
+
+Here is the job description I am targeting:
+[paste JD text]
+
+Please optimize my resume for this role.
+Claude will:
+
+Recognise the intent
+Call optimize_resume() automatically
+Run your full LangGraph pipeline
+Return the ATS score, gaps, and rewritten bullets
+Explain the results to you in plain English
+
+
+Test Each Tool Separately
+# triggers get_ats_score
+"What is my ATS score for this role?
+ Resume: [paste]
+ JD: [paste]"
+
+
+# triggers get_gap_report
+"What is missing from my resume for this job?
+ Don't rewrite anything yet, just tell me the gaps.
+ Resume: [paste]
+ JD: [paste]"
+
+
+# triggers optimize_resume
+"Rewrite my resume to match this job description.
+ Resume: [paste]
+ JD: [paste]"
+
+Updated Project Structure
+ats-optimizer/
+│
+├── server.py               ← NEW — MCP entry point
+├── optimize.py             ← KEEP — CLI still works
+├── requirements.txt        ← updated with mcp + fastmcp
+│
+├── agents/                 ← UNCHANGED
+│   ├── parser.py
+│   ├── jd_parser.py
+│   ├── gap_analyzer.py
+│   └── rewriter.py
+│
+├── graph/                  ← UNCHANGED
+│   └── workflow.py
+│
+└── utils/                  ← UNCHANGED
+    ├── pdf_reader.py
+    ├── build_kb.py
+    └── formatter.py
+One file added. Nothing else touched.
+
+
+
+
+
 **Commit structure:**
 ```bash
 git add .
