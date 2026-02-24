@@ -1,0 +1,15 @@
+# LangChain core
+langchain
+langchain-openai
+langgraph
+
+# PDF processing
+pypdf
+
+# Vector DB (local)
+chromadb
+
+# Utilities
+python-dotenv
+tiktoken
+pydantic
