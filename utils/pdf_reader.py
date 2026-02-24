@@ -1,47 +1,48 @@
 # utils/pdf_reader.py
+import re
 from pathlib import Path
+
 from pypdf import PdfReader
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+from utils.paths import resolve_path
 
 
-def resolve_path(pdf_path):
-    """Resolve relative paths against project root."""
-    path = Path(pdf_path)
-    if path.is_absolute():
-        return path
-    return PROJECT_ROOT / path
+def _normalize_whitespace(text: str) -> str:
+    """Collapse excessive newlines and strip leading/trailing whitespace."""
+    text = text.strip()
+    return re.sub(r"\n{3,}", "\n\n", text)
 
 
-def extract_text(pdf_path):
+def extract_text(pdf_path: str) -> str:
     """
-    Extract and return all text from a PDF file.
-    Skips empty pages automatically.
+    Extract all text from a PDF and return as a single string.
+    Skips empty pages and normalizes excessive whitespace/blank lines.
 
     Args:
         pdf_path: Absolute or project-relative path to the PDF.
+
+    Returns:
+        Concatenated text from all non-empty pages.
 
     Raises:
         FileNotFoundError: If the file does not exist.
     """
     resolved = resolve_path(pdf_path)
-
     if not resolved.exists():
         raise FileNotFoundError(f"PDF not found: {resolved}")
 
     reader = PdfReader(str(resolved))
-    pages = []
-
+    parts = []
     for page in reader.pages:
         page_text = page.extract_text()
         if page_text:
-            pages.append(page_text.strip())
+            parts.append(page_text.strip())
 
-    return "\n".join(pages)
+    return _normalize_whitespace("\n".join(parts))
 
 
-def pdf_stats(pdf_path):
-    """Return basic stats about a PDF without re-extracting text."""
+def pdf_stats(pdf_path: str) -> dict:
+    """Return basic stats about a PDF without re-extracting full text."""
     resolved = resolve_path(pdf_path)
     reader = PdfReader(str(resolved))
     return {
