@@ -3,12 +3,20 @@ RAG knowledge base: embed JD files from data/jds into ChromaDB per role.
 Single responsibility: build and query vector store; no parsing or rewriting.
 """
 
+import warnings
+
+# Reduce noise from urllib3/Google when running on older Python
+warnings.filterwarnings("ignore", message=".*OpenSSL.*")
+warnings.filterwarnings("ignore", message=".*non-supported Python version.*")
+warnings.filterwarnings("ignore", message=".*Python version 3.9 past its end of life.*")
+warnings.filterwarnings("ignore", category=FutureWarning, module="google.")
+
 from pathlib import Path
 from typing import Optional
 
 from dotenv import load_dotenv
-from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
+from langchain_chroma import Chroma
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from utils.paths import resolve_path
@@ -21,7 +29,8 @@ CHROMA_DIR = resolve_path("data/chroma_db")
 
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50
-EMBEDDING_MODEL = "text-embedding-3-small"
+# Current Gemini embedding model (models/embedding-001 is deprecated)
+EMBEDDING_MODEL = "models/gemini-embedding-001"
 
 
 def _load_jd_documents(base_dir: Path) -> list[tuple[str, list[str], list[dict]]]:
@@ -75,7 +84,7 @@ def build_knowledge_base(
         raise FileNotFoundError(f"JDs directory not found: {base}")
 
     persist.mkdir(parents=True, exist_ok=True)
-    embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
+    embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
     role_data = _load_jd_documents(base)
 
     if not role_data:
@@ -113,7 +122,7 @@ def query_kb(
         List of retrieved chunk strings.
     """
     persist = chroma_dir or CHROMA_DIR
-    embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
+    embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
     vectorstore = Chroma(
         collection_name=collection_name,
         persist_directory=str(persist),

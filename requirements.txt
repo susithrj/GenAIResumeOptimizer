@@ -1,6 +1,7 @@
 # LangChain core
 langchain
-langchain-openai
+langchain-google-genai
+langchain-groq
 langchain-community
 langgraph
 
@@ -9,6 +10,7 @@ pypdf
 
 # Vector DB (local)
 chromadb
+langchain-chroma
 
 # Utilities
 python-dotenv
