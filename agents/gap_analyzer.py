@@ -3,7 +3,7 @@ Gap analyzer: compare parsed resume vs parsed JD → ATS score and actionable ga
 Single responsibility: scoring and gap identification; no rewriting.
 """
 
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from pydantic import BaseModel
 
 from agents.jd_parser import parse_jd
@@ -53,7 +53,10 @@ def analyze_gaps(parsed_resume: dict, parsed_jd: dict) -> GapReport:
     Returns:
         GapReport with ats_score, matched/missing skills, weak_sections, recommendations.
     """
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatGroq(
+        model="llama-3.3-70b-versatile",
+        temperature=0,
+    )
     structured_llm = llm.with_structured_output(GapReport)
     prompt = _GAP_ANALYSIS_PROMPT.format(
         parsed_resume=parsed_resume,

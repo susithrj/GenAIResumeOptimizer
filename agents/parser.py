@@ -5,7 +5,7 @@ Single responsibility: extraction only; no scoring or rewriting.
 
 from typing import Optional
 
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from pydantic import BaseModel
 
 from utils.pdf_reader import extract_text
@@ -51,7 +51,10 @@ def parse_resume(resume_text: str) -> ResumeStructure:
     Returns:
         ResumeStructure with name, skills, experience, education, etc.
     """
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatGroq(
+        model="llama-3.3-70b-versatile",
+        temperature=0,
+    )
     structured_llm = llm.with_structured_output(ResumeStructure)
     prompt = _EXTRACT_PROMPT.format(resume_text=resume_text)
     return structured_llm.invoke(prompt)

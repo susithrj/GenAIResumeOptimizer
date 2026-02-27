@@ -16,12 +16,12 @@ Does:
 from typing import Dict, List
 
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_groq import ChatGroq
 from pydantic import BaseModel
 
 from utils.build_kb import CHROMA_DIR, EMBEDDING_MODEL
 from langchain_chroma import Chroma
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 load_dotenv()
 
@@ -71,7 +71,10 @@ def rewrite_resume(
     patterns = vectorstore.similarity_search(query, k=3)
     pattern_text = "\n---\n".join([p.page_content for p in patterns]) if patterns else ""
 
-    llm = ChatOpenAI(model="gpt-4o", temperature=0.3)
+    llm = ChatGroq(
+        model="llama-3.3-70b-versatile",
+        temperature=0.3,
+    )
     structured_llm = llm.with_structured_output(RewriteResult)
 
     system_prompt = """

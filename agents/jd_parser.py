@@ -5,7 +5,7 @@ Single responsibility: extract required/preferred skills, seniority, keywords.
 
 from typing import Optional
 
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from pydantic import BaseModel
 
 from utils.paths import resolve_path
@@ -44,7 +44,10 @@ def parse_jd(jd_text: str) -> JDStructure:
     Returns:
         JDStructure with job_title, seniority, required/preferred skills, keywords.
     """
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatGroq(
+        model="llama-3.3-70b-versatile",
+        temperature=0,
+    )
     structured_llm = llm.with_structured_output(JDStructure)
     prompt = _JD_EXTRACT_PROMPT.format(jd_text=jd_text)
     return structured_llm.invoke(prompt)
