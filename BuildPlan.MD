@@ -491,38 +491,51 @@ MERN patterns, a Java developer gets Java patterns.
 4. Write a query function to test retrieval
 5. Confirm retrieval returns relevant chunks
 
-**Code:**
+**Code (updated: Google embeddings):**
 ```python
 # utils/build_kb.py
 from pathlib import Path
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from typing import Optional
+
 from dotenv import load_dotenv
+from langchain_chroma import Chroma
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+from utils.paths import resolve_path
 
 load_dotenv()
 
-JDS_DIR    = "data/jds"
-CHROMA_DIR = "data/chroma_db"
+JDS_DIR    = resolve_path("data/jds")
+CHROMA_DIR = resolve_path("data/chroma_db")
+
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 50
+EMBEDDING_MODEL = "models/gemini-embedding-001"
 
 
-def build_knowledge_base():
+def build_knowledge_base(
+    jds_dir: Optional[Path] = None, chroma_dir: Optional[Path] = None
+) -> None:
     """Build ChromaDB collections from JDs organised by role folder."""
-    base_dir   = Path(JDS_DIR)
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-    splitter   = RecursiveCharacterTextSplitter(
-        chunk_size=500, chunk_overlap=50
+    base = jds_dir or JDS_DIR
+    persist = chroma_dir or CHROMA_DIR
+
+    embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=CHUNK_SIZE,
+        chunk_overlap=CHUNK_OVERLAP,
     )
 
-    for role_folder in base_dir.iterdir():
+    for role_folder in base.iterdir():
         if not role_folder.is_dir():
             continue
 
-        collection_name   = role_folder.name  # e.g. "java_developer"
+        collection_name = role_folder.name  # e.g. "java_developer"
         chunks, metadatas = [], []
 
         for jd_file in role_folder.glob("*.txt"):
-            text       = jd_file.read_text()
+            text = jd_file.read_text(encoding="utf-8")
             doc_chunks = splitter.split_text(text)
             chunks.extend(doc_chunks)
             metadatas.extend(
@@ -532,9 +545,9 @@ def build_knowledge_base():
 
         if chunks:
             vectorstore = Chroma(
-                collection_name    = collection_name,
-                persist_directory  = CHROMA_DIR,
-                embedding_function = embeddings
+                collection_name=collection_name,
+                persist_directory=str(persist),
+                embedding_function=embeddings,
             )
             vectorstore.add_texts(texts=chunks, metadatas=metadatas)
             print(f"Built: {collection_name} ({len(chunks)} chunks)")
@@ -542,11 +555,11 @@ def build_knowledge_base():
 
 def query_kb(query, collection_name="java_developer", k=3):
     """Query a specific role collection in ChromaDB."""
-    embeddings  = OpenAIEmbeddings(model="text-embedding-3-small")
+    embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
     vectorstore = Chroma(
-        collection_name    = collection_name,
-        persist_directory  = CHROMA_DIR,
-        embedding_function = embeddings
+        collection_name=collection_name,
+        persist_directory=str(CHROMA_DIR),
+        embedding_function=embeddings,
     )
     results = vectorstore.similarity_search(query, k=k)
     return [r.page_content for r in results]
@@ -611,15 +624,16 @@ STEP 3 — LLM (GPT-4o)
 
 **Code:**
 ```python
-# agents/rewriter.py
 from pydantic import BaseModel
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_openai import ChatOpenAI
+from langchain_chroma import Chroma
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from dotenv import load_dotenv
 
 load_dotenv()
 
 CHROMA_DIR = "data/chroma_db"
+EMBEDDING_MODEL = "models/gemini-embedding-001"
 
 
 class RewrittenBullet(BaseModel):
@@ -642,7 +656,7 @@ def rewrite_resume(parsed_resume, gap_report, parsed_jd, target_role="general"):
     """
     collection_name = target_role.lower().replace(" ", "_")
 
-    embeddings  = OpenAIEmbeddings(model="text-embedding-3-small")
+    embeddings  = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
     vectorstore = Chroma(
         collection_name    = collection_name,
         persist_directory  = CHROMA_DIR,
