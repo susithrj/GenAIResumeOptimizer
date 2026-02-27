@@ -5,8 +5,9 @@ langchain-groq
 langchain-community
 langgraph
 
-# PDF processing
+# PDF & DOCX processing
 pypdf
+python-docx
 
 # Vector DB (local)
 chromadb

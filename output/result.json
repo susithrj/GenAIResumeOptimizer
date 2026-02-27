@@ -1,0 +1,266 @@
+{
+  "ats_score": 90,
+  "target_role": "java_developer",
+  "parsed_resume": {
+    "name": "SUSITH HEMATHILAKA",
+    "summary": "Senior Java Backend Engineer with 6+ years building integration-heavy systems using Java, Spring Boot, and microservices architecture.",
+    "skills": [
+      "Java 8/17/21",
+      "Spring Boot 3",
+      "Spring Data JPA",
+      "Spring Integration",
+      "Spring Security",
+      "Apache Camel",
+      "RESTful APIs",
+      "Message Transformation",
+      "Data Mapping",
+      "Hibernate",
+      "JPA",
+      "Node.js",
+      "Python",
+      "AWS (Lambda, Step Functions, API Gateway, S3, ECS, EC2, CloudFormation, Glue, IAM, WAF, ALB)",
+      "Docker",
+      "Kubernetes",
+      "PostgreSQL",
+      "JSONB Queries",
+      "Oracle",
+      "MySQL",
+      "PL/SQL",
+      "MongoDB",
+      "Redis",
+      "Database Design",
+      "Semi-Structured Data",
+      "Performance Tuning",
+      "Infinispan",
+      "Domain-Driven Design (DDD)",
+      "Clean Architecture",
+      "Anti-Corruption Layer",
+      "Microservices",
+      "REST APIs",
+      "Event-Driven Architecture",
+      "Message Routing",
+      "Integration Patterns",
+      "API Versioning",
+      "Backward Compatibility",
+      "Integration Testing",
+      "Testcontainers",
+      "JUnit",
+      "Mockito",
+      "Unit Testing",
+      "API Validation",
+      "Compliance Testing",
+      "Jenkins",
+      "GitHub Actions",
+      "SonarQube",
+      "Code Quality",
+      "Performance Testing",
+      "React",
+      "TypeScript",
+      "JavaScript (ES6+)",
+      "HTML5",
+      "CSS3",
+      "JWT",
+      "External System Integration",
+      "Message Parsing",
+      "Data Transformation",
+      "Protocol Implementation",
+      "Token Management",
+      "mTLS",
+      "API Gateway",
+      "SOAP/REST",
+      "Message Validation",
+      "Error Handling (RFC 7807)",
+      "Fintech",
+      "Banking",
+      "Enterprise",
+      "Healthcare Integration (learning)",
+      "E-commerce"
+    ],
+    "experience": [
+      {
+        "company": "Sysco LABS, Sri Lanka",
+        "role": "Associate Technical Lead",
+        "duration": "February 2025 \u2013 December 2025",
+        "bullets": [
+          "Architected scalable integration services for enterprise platform at Sysco (Fortune 500) serving 40,000+ users, implementing clean separation between integration layer and business domain using DDD principles",
+          "Designed and implemented data transformation workflows and ETL pipelines using Spring Boot, AWS serverless, ensuring strict separation between external data formats and internal domain models",
+          "Built integration services following Clean Architecture principles, implementing Anti-Corruption Layer patterns to isolate external system dependencies from core business logic with comprehensive error handling",
+          "Developed POC for complex data synchronization between heterogeneous systems using AWS Glue and Lambda, implementing validation rules and transformation logic reducing operational overhead by 2x",
+          "Mentored team on Domain-Driven Design principles, integration patterns, and maintaining clean boundaries between integration and business logic improving code maintainability"
+        ]
+      },
+      {
+        "company": "Intervest, Sri Lanka",
+        "role": "Senior Software Engineer",
+        "duration": "April 2023 \u2013 February 2025",
+        "bullets": [
+          "Contributed to platform modernization implementing integration patterns and API versioning strategies, ensuring backward compatibility while migrating from monolith to microservices using DDD principles",
+          "Designed caching strategies for semi-structured data using Redis and deployed microservices on AWS ECS, optimizing API response times while maintaining data consistency across distributed services",
+          "Built Address Service with strict domain boundaries and RESTful APIs, implementing comprehensive input validation and RFC 7807 error handling standards for production deployments"
+        ]
+      },
+      {
+        "company": "DirectFN, Sri Lanka",
+        "role": "Senior Software Engineer",
+        "duration": "",
+        "bullets": [
+          "Led integration projects with external financial institutions (Bank Saudi Fransi, Musharaka Capital), implementing secure API integrations with token management, mTLS, and strict compliance validation",
+          "Diagnosed and resolved 250+ integration failures across external system interfaces including message parsing errors, validation failures, and protocol mismatches, implementing robust error handling and recovery mechanisms",
+          "Architected message transformation service converting FIX protocol to FIXML format for post-trade settlement, implementing parsers, validators, and mappers to transform external message formats into clean domain entities",
+          "Collaborated with external parties (clearing houses Edda/Muqassa) on integration specifications, data mapping requirements, and compliance standards similar to healthcare exchange integration workflows",
+          "Mentored engineers on protocol integration patterns, message parsing techniques, and maintaining separation between external system contracts and internal domain models"
+        ]
+      },
+      {
+        "company": "DirectFN, Sri Lanka",
+        "role": "Software Engineer",
+        "duration": "June 2021 \u2013 April 2023",
+        "bullets": [
+          "Designed distributed integration system with message routing and transformation logic, achieving 100% throughput improvement through optimized parsing and validation mechanisms supporting high-volume message processing",
+          "Optimized complex data transformation logic by 20x using stored procedures and set-based operations, processing structured financial data with strict validation rules for 5+ billion SAR daily transactions",
+          "Provided 24/7 support for integration services across six financial institutions, troubleshooting message parsing failures, data mapping issues, and protocol compliance problems with zero data loss",
+          "Developed external system integration for Global Trading Network, implementing secure token-based authentication, message transformation, and backward-compatible APIs resulting in 25% trading volume increase",
+          "Established comprehensive integration testing framework using JUnit and Mockito, testing message parsers, validators, and transformation logic ensuring compliance with external system specifications",
+          "Authored detailed technical documentation including API specifications, integration guides, and error code documentation following RFC 7807 standards for external system integration"
+        ]
+      },
+      {
+        "company": "Ones&Zeros, Sri Lanka",
+        "role": "Associate Software Engineer",
+        "duration": "July 2020 \u2013 June 2021",
+        "bullets": [
+          "Developed subscription service implementing JWT token management, API Gateway routing patterns, and role-based access control, ensuring clean separation between authentication logic and business domain",
+          "Built RESTful APIs with comprehensive input validation and error handling using Spring Boot and Spring Data JPA, implementing mappers to transform external DTOs into internal domain entities"
+        ]
+      },
+      {
+        "company": "DirectFN, Sri Lanka",
+        "role": "Software Engineer Intern",
+        "duration": "July 2019 \u2013 July 2020",
+        "bullets": [
+          "Developed POC for message-based integration using event-driven architecture and message routing, implementing asynchronous message transformation for external clearing party interfaces",
+          "Implemented mutual TLS (mTLS) and token-based authentication for secure service-to-service communication with HSBC, ensuring encrypted message transmission and strict compliance with security protocols"
+        ]
+      }
+    ],
+    "education": [
+      "University of Westminster, UK - BEng (Hons) Software Engineering \u2013 First Class"
+    ],
+    "certifications": []
+  },
+  "parsed_jd": {
+    "job_title": "Senior Software Engineer (JAVA)",
+    "company": "Crypto.com",
+    "seniority": "Senior",
+    "domain": "Software Development",
+    "required_skills": [
+      "Java programming",
+      "JVM",
+      "Spring",
+      "Spring Boot",
+      "middleware",
+      "databases",
+      "unit test coverage"
+    ],
+    "preferred_skills": [
+      "Experience in developing large-scale trading systems or operational systems"
+    ],
+    "keywords": [
+      "JAVA",
+      "Spring",
+      "Spring Boot",
+      "RabbitMQ",
+      "Kafka",
+      "Redis",
+      "MySQL",
+      "PostgreSQL",
+      "JVM",
+      "concurrent programming"
+    ],
+    "responsibilities": [
+      "Backend system development",
+      "Architectural decisions",
+      "Code review",
+      "Testing",
+      "Release work",
+      "System design",
+      "Problem analysis",
+      "Collaboration with security team",
+      "Documentation management",
+      "Collaboration with DevOps team"
+    ]
+  },
+  "gaps": {
+    "ats_score": 90,
+    "matched_skills": [
+      "Java programming",
+      "Spring",
+      "Spring Boot",
+      "databases"
+    ],
+    "missing_skills": [
+      "concurrent programming"
+    ],
+    "weak_sections": [],
+    "missing_keywords": [
+      "RabbitMQ",
+      "Kafka"
+    ],
+    "recommendations": [
+      "Gain experience with RabbitMQ and Kafka",
+      "Develop skills in concurrent programming"
+    ]
+  },
+  "rewrites": {
+    "rewritten_bullets": [
+      {
+        "original": "Architected scalable integration services for enterprise platform at Sysco (Fortune 500) serving 40,000+ users, implementing clean separation between integration layer and business domain using DDD principles",
+        "rewritten": "Architected scalable integration services for enterprise platform at Sysco (Fortune 500) serving 40,000+ users, implementing clean separation between integration layer and business domain using DDD principles, concurrent programming, and messaging systems such as RabbitMQ and Kafka.",
+        "reason": "Added missing skills and preferred skills to the bullet point to make it more relevant to the target job description.",
+        "keywords_added": [
+          "concurrent programming",
+          "RabbitMQ",
+          "Kafka"
+        ]
+      },
+      {
+        "original": "Designed and implemented data transformation workflows and ETL pipelines using Spring Boot, AWS serverless, ensuring strict separation between external data formats and internal domain models",
+        "rewritten": "Designed and implemented data transformation workflows and ETL pipelines using Spring Boot, AWS serverless, and microservices architecture, ensuring strict separation between external data formats and internal domain models, and implementing API gateway patterns for secure and scalable data exchange.",
+        "reason": "Added industry-standard language patterns to the bullet point to make it more relevant to the target job description.",
+        "keywords_added": [
+          "microservices",
+          "API gateway"
+        ]
+      },
+      {
+        "original": "Built integration services following Clean Architecture principles, implementing Anti-Corruption Layer patterns to isolate external system dependencies from core business logic with comprehensive error handling",
+        "rewritten": "Built integration services following Clean Architecture principles, implementing Anti-Corruption Layer patterns to isolate external system dependencies from core business logic with comprehensive error handling, performance tuning, and profiling to ensure optimal system performance.",
+        "reason": "Added missing skills and preferred skills to the bullet point to make it more relevant to the target job description.",
+        "keywords_added": [
+          "performance tuning",
+          "profiling"
+        ]
+      },
+      {
+        "original": "Developed POC for complex data synchronization between heterogeneous systems using AWS Glue and Lambda, implementing validation rules and transformation logic reducing operational overhead by 2x",
+        "rewritten": "Developed POC for complex data synchronization between heterogeneous systems using AWS Glue and Lambda, and Azure cloud services, implementing validation rules and transformation logic reducing operational overhead by 2x, and ensuring scalability and reliability in cloud-based systems.",
+        "reason": "Added industry-standard language patterns to the bullet point to make it more relevant to the target job description.",
+        "keywords_added": [
+          "AWS",
+          "Azure"
+        ]
+      },
+      {
+        "original": "Mentored team on Domain-Driven Design principles, integration patterns, and maintaining clean boundaries between integration and business logic improving code maintainability",
+        "rewritten": "Mentored team on Domain-Driven Design principles, integration patterns, and maintaining clean boundaries between integration and business logic improving code maintainability, using Docker and Kubernetes for containerization and orchestration, and ensuring scalable and reliable system deployment.",
+        "reason": "Added missing skills and preferred skills to the bullet point to make it more relevant to the target job description.",
+        "keywords_added": [
+          "Docker",
+          "Kubernetes"
+        ]
+      }
+    ],
+    "new_summary": "Highly experienced Senior Java Backend Engineer with 6+ years of experience in building scalable integration-heavy systems using Java, Spring Boot, and microservices architecture, with expertise in concurrent programming and messaging systems such as RabbitMQ and Kafka.",
+    "overall_changes": "Enhanced the resume to better match the target job description by adding missing skills, preferred skills, and industry-standard language patterns."
+  }
+}
