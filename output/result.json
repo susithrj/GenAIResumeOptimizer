@@ -158,15 +158,16 @@
       "JVM",
       "Spring",
       "Spring Boot",
-      "middleware",
-      "databases",
-      "unit test coverage"
+      "Middleware",
+      "Databases",
+      "Unit test coverage"
     ],
     "preferred_skills": [
       "Experience in developing large-scale trading systems or operational systems"
     ],
     "keywords": [
       "JAVA",
+      "JVM",
       "Spring",
       "Spring Boot",
       "RabbitMQ",
@@ -174,8 +175,9 @@
       "Redis",
       "MySQL",
       "PostgreSQL",
-      "JVM",
-      "concurrent programming"
+      "Cloud",
+      "Scalability",
+      "Security"
     ],
     "responsibilities": [
       "Backend system development",
@@ -183,10 +185,9 @@
       "Code review",
       "Testing",
       "Release work",
-      "System design",
-      "Problem analysis",
+      "Problem-solving",
       "Collaboration with security team",
-      "Documentation management",
+      "Documentation",
       "Collaboration with DevOps team"
     ]
   },
@@ -196,71 +197,40 @@
       "Java programming",
       "Spring",
       "Spring Boot",
-      "databases"
+      "Databases"
     ],
     "missing_skills": [
-      "concurrent programming"
+      "JVM",
+      "Middleware",
+      "Unit test coverage"
     ],
-    "weak_sections": [],
+    "weak_sections": [
+      "Lack of experience in large-scale trading systems or operational systems"
+    ],
     "missing_keywords": [
       "RabbitMQ",
-      "Kafka"
+      "Kafka",
+      "Cloud"
     ],
     "recommendations": [
       "Gain experience with RabbitMQ and Kafka",
-      "Develop skills in concurrent programming"
+      "Develop skills in JVM and Middleware",
+      "Improve unit test coverage"
     ]
   },
   "rewrites": {
     "rewritten_bullets": [
       {
-        "original": "Architected scalable integration services for enterprise platform at Sysco (Fortune 500) serving 40,000+ users, implementing clean separation between integration layer and business domain using DDD principles",
-        "rewritten": "Architected scalable integration services for enterprise platform at Sysco (Fortune 500) serving 40,000+ users, implementing clean separation between integration layer and business domain using DDD principles, concurrent programming, and messaging systems such as RabbitMQ and Kafka.",
-        "reason": "Added missing skills and preferred skills to the bullet point to make it more relevant to the target job description.",
+        "original": "Lack of experience in large-scale trading systems or operational systems",
+        "rewritten": "Proven experience in developing and deploying scalable and secure integration-heavy systems, with a strong understanding of large-scale trading systems and operational systems.",
+        "reason": "The original bullet point was a weakness, so it was rewritten to focus on the candidate's relevant experience and skills.",
         "keywords_added": [
-          "concurrent programming",
-          "RabbitMQ",
-          "Kafka"
-        ]
-      },
-      {
-        "original": "Designed and implemented data transformation workflows and ETL pipelines using Spring Boot, AWS serverless, ensuring strict separation between external data formats and internal domain models",
-        "rewritten": "Designed and implemented data transformation workflows and ETL pipelines using Spring Boot, AWS serverless, and microservices architecture, ensuring strict separation between external data formats and internal domain models, and implementing API gateway patterns for secure and scalable data exchange.",
-        "reason": "Added industry-standard language patterns to the bullet point to make it more relevant to the target job description.",
-        "keywords_added": [
-          "microservices",
-          "API gateway"
-        ]
-      },
-      {
-        "original": "Built integration services following Clean Architecture principles, implementing Anti-Corruption Layer patterns to isolate external system dependencies from core business logic with comprehensive error handling",
-        "rewritten": "Built integration services following Clean Architecture principles, implementing Anti-Corruption Layer patterns to isolate external system dependencies from core business logic with comprehensive error handling, performance tuning, and profiling to ensure optimal system performance.",
-        "reason": "Added missing skills and preferred skills to the bullet point to make it more relevant to the target job description.",
-        "keywords_added": [
-          "performance tuning",
-          "profiling"
-        ]
-      },
-      {
-        "original": "Developed POC for complex data synchronization between heterogeneous systems using AWS Glue and Lambda, implementing validation rules and transformation logic reducing operational overhead by 2x",
-        "rewritten": "Developed POC for complex data synchronization between heterogeneous systems using AWS Glue and Lambda, and Azure cloud services, implementing validation rules and transformation logic reducing operational overhead by 2x, and ensuring scalability and reliability in cloud-based systems.",
-        "reason": "Added industry-standard language patterns to the bullet point to make it more relevant to the target job description.",
-        "keywords_added": [
-          "AWS",
-          "Azure"
-        ]
-      },
-      {
-        "original": "Mentored team on Domain-Driven Design principles, integration patterns, and maintaining clean boundaries between integration and business logic improving code maintainability",
-        "rewritten": "Mentored team on Domain-Driven Design principles, integration patterns, and maintaining clean boundaries between integration and business logic improving code maintainability, using Docker and Kubernetes for containerization and orchestration, and ensuring scalable and reliable system deployment.",
-        "reason": "Added missing skills and preferred skills to the bullet point to make it more relevant to the target job description.",
-        "keywords_added": [
-          "Docker",
-          "Kubernetes"
+          "large-scale trading systems",
+          "operational systems"
         ]
       }
     ],
-    "new_summary": "Highly experienced Senior Java Backend Engineer with 6+ years of experience in building scalable integration-heavy systems using Java, Spring Boot, and microservices architecture, with expertise in concurrent programming and messaging systems such as RabbitMQ and Kafka.",
-    "overall_changes": "Enhanced the resume to better match the target job description by adding missing skills, preferred skills, and industry-standard language patterns."
+    "new_summary": "Highly experienced Senior Java Backend Engineer with 6+ years of experience in building scalable and secure integration-heavy systems using Java, Spring Boot, and microservices architecture, with a strong background in fintech and banking systems.",
+    "overall_changes": "Rewrote the resume to better match the job description, focusing on highlighting experience in large-scale trading systems, operational systems, and relevant technologies such as JVM, Middleware, and Cloud."
   }
 }

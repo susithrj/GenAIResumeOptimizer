@@ -17,7 +17,12 @@ from typing import Optional
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+try:
+    # Newer LangChain splitters package (1.x)
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+except ImportError:
+    # Backwards compatibility with older LangChain versions
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from utils.paths import resolve_path
 
