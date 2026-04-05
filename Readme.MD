@@ -1,6 +1,44 @@
-# ATS Resume Optimizer 🎯
+# ATS Resume Optimizer / TailorCV monorepo
 
-> A multi-agent CLI pipeline that analyzes your resume against a job description, scores ATS alignment, identifies gaps, and rewrites your bullets — powered by LangGraph, RAG, and GPT-4o.
+> A multi-agent pipeline that analyzes your resume against a job description, scores ATS alignment, identifies gaps, and rewrites your bullets — powered by LangChain, RAG, and LLMs.
+
+## Repository layout
+
+| Path | Purpose |
+|------|---------|
+| [`tailorcv-mcp/`](tailorcv-mcp/) | Python backend: `agents/`, `utils/`, `data/`, MCP server (`server.py`), CLI (`optimize.py`), REST API (`api.py`) |
+| [`tailorcv-ui/`](tailorcv-ui/) | React (Vite + TypeScript) web UI — TailorCV |
+
+**Run backend commands from `tailorcv-mcp`** (so `data/`, `output/`, and Chroma paths resolve correctly).
+
+### Quick start (API + UI)
+
+```bash
+cd tailorcv-mcp
+python -m venv .venv && source .venv/bin/activate   # or .venv\Scripts\activate on Windows
+pip install -r requirements.txt
+# Put API keys in tailorcv-mcp/.env (or repo-root .env — load_dotenv searches upward)
+uvicorn api:app --reload --host 127.0.0.1 --port 8000
+```
+
+```bash
+cd tailorcv-ui
+npm install
+npm run dev
+```
+
+Open the URL Vite prints (default `http://localhost:5173`). Set `VITE_API_BASE_URL` if the API is not at `http://127.0.0.1:8000`.
+
+### MCP (Cursor / Claude Desktop)
+
+Point your MCP server config at [`tailorcv-mcp/server.py`](tailorcv-mcp/server.py) and run it with cwd `tailorcv-mcp` (or `PYTHONPATH` including `tailorcv-mcp`).
+
+### CLI
+
+```bash
+cd tailorcv-mcp
+python optimize.py --resume data/resume.docx --jd data/job_description.txt
+```
 
 ---
 
@@ -15,7 +53,7 @@ Feed it a resume PDF and a job description. Get back:
 - **Optimized Resume** — saved as `output/optimized_resume.txt`
 
 ```
-$ python optimize.py --resume data/resume.pdf --jd data/job_description.txt
+$ cd tailorcv-mcp && python optimize.py --resume data/resume.pdf --jd data/job_description.txt
 
 Parsing resume...          ✓
 Parsing job description... ✓
@@ -111,90 +149,48 @@ resume.pdf + job_description.txt
 
 ## Project Structure
 
+All Python paths below live under **`tailorcv-mcp/`**:
+
 ```
-ats-optimizer/
-│
-├── optimize.py             # main entry point
-├── .env                    # API keys (never commit)
-├── .gitignore
-├── README.md
-├── ARCHITECTURE.md
-│
+tailorcv-mcp/
+├── optimize.py          # CLI entry
+├── server.py            # MCP server
+├── api.py               # REST API for tailorcv-ui
 ├── agents/
-│   ├── parser.py           # resume section extractor
-│   ├── jd_parser.py        # JD keyword + requirements extractor
-│   ├── gap_analyzer.py     # ATS scorer + gap finder
-│   └── rewriter.py         # RAG-powered bullet rewriter
-│
-├── graph/
-│   └── workflow.py         # LangGraph StateGraph definition
-│
 ├── utils/
-│   ├── pdf_reader.py       # PDF → clean text
-│   ├── build_kb.py         # embed JDs into ChromaDB
-│   └── formatter.py        # terminal output + file saver
-│
-├── data/
-│   ├── resume.pdf          # your resume
-│   ├── job_description.txt # target JD
-│   └── jds/                # knowledge base JDs (20+)
-│
-└── output/
-    ├── result.json         # full structured output
-    └── optimized_resume.txt
+├── data/                # jds/, chroma_db/, sample files
+└── output/              # generated (gitignored)
 ```
 
 ---
 
-## Setup
+## Setup (Python backend)
 
-**Requirements:** Python 3.10+, OpenAI API key
+**Requirements:** Python 3.10+, API keys as required by `requirements.txt` (e.g. Groq, Google for embeddings).
 
 ```bash
-# 1. Clone and enter
-git clone https://github.com/yourusername/ats-optimizer
-cd ats-optimizer
-
-# 2. Create virtual environment
-python -m venv venv
-source venv/bin/activate        # mac/linux
-venv\Scripts\activate           # windows
-
-# 3. Install dependencies
-pip install langchain langchain-openai langgraph
-pip install pypdf chromadb python-dotenv tiktoken pydantic
-
-# 4. Set API key
-echo "OPENAI_API_KEY=sk-..." > .env
-
-# 5. Build the JD knowledge base (run once)
-python utils/build_kb.py
-
-# 6. Smoke test
-python test.py
+cd tailorcv-mcp
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+# Create .env with your keys (see tailorcv-mcp agents / build_kb)
+python utils/build_kb.py   # run once to embed JDs into Chroma
 ```
 
 ---
 
-## Usage
+## Usage (CLI)
 
 ```bash
-# Basic run
-python optimize.py
-
-# With explicit paths
-python optimize.py --resume data/resume.pdf --jd data/job_description.txt
-
-# Resume an interrupted run
-python optimize.py --resume data/resume.pdf --jd data/jds/ai_engineer.txt --thread-id run_001
+cd tailorcv-mcp
+python optimize.py --resume data/resume.docx --jd data/job_description.txt
 ```
 
-**Output files:**
+**Output files** (under `tailorcv-mcp/output/` when using CLI):
 
 ```
-output/result.json           # full structured data (score, gaps, rewrites, change log)
-output/optimized_resume.txt  # clean resume text ready to paste
-runs.db                      # SQLite checkpoint store
+tailorcv-mcp/output/result.json
+tailorcv-mcp/output/optimized_resume.docx   # when input is DOCX
 ```
 
 ---

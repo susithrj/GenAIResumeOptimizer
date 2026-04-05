@@ -1,5 +1,8 @@
 .idea
 .env
-/data/chroma_db/
-/output/
-/BuildPlan.MD
+tailorcv-mcp/.env
+tailorcv-mcp/data/chroma_db/
+tailorcv-mcp/output/
+node_modules/
+dist/
+*.local
