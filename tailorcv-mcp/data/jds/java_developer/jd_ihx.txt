@@ -1,0 +1,32 @@
+Associate Tech Lead — IHX (Insurance Healthcare Exchange)
+Colombo, Sri Lanka | Full Time
+
+About the Role:
+IHX is transforming insurance and healthcare data exchange in Sri Lanka. We are hiring an Associate Tech Lead to drive backend engineering for our claims processing and provider network platforms.
+
+Requirements:
+- 6+ years of software engineering experience
+- Java Spring Boot, Spring Cloud
+- Team leadership or tech lead experience (2+ years)
+- AWS cloud services (RDS, Lambda, SQS, S3)
+- Microservices and API-first design
+- Strong SQL skills (MySQL or PostgreSQL)
+- Kafka or SQS for async processing
+
+Nice to have:
+- Insurance or healthcare domain knowledge
+- Experience with HL7 or FHIR standards
+- Knowledge of GDPR or data privacy regulations
+- Scrum Master experience
+
+Responsibilities:
+- Lead a backend engineering team of 5–8 developers
+- Own architecture decisions for claims and billing platforms
+- Drive code quality through reviews and standards
+- Coordinate with product, QA, and DevOps teams
+- Interview and onboard new engineers
+- Represent the team in architectural governance
+
+Company: IHX (Pvt) Ltd
+Location: Colombo, Sri Lanka
+Type: Full Time

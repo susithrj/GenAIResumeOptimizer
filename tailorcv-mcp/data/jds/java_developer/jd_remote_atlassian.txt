@@ -1,0 +1,32 @@
+Senior Software Engineer — Atlassian
+Remote (APAC) | Full Time
+
+About the Role:
+Atlassian makes Jira, Confluence, and Trello. We are hiring Senior Software Engineers for our Jira platform team working from anywhere in APAC.
+
+Requirements:
+- 5+ years software engineering experience
+- Java backend development expertise
+- AWS cloud services and serverless
+- Microservices and distributed systems
+- PostgreSQL and data modeling
+- Strong system design skills
+- Experience with large-scale SaaS platforms
+
+Nice to have:
+- Experience with Atlassian products (Jira, Confluence)
+- Kubernetes and container orchestration
+- Experience in developer tooling products
+- Strong written communication for async collaboration
+
+Responsibilities:
+- Build platform services powering Jira for millions of users
+- Collaborate asynchronously with global teams
+- Drive technical design and architectural improvements
+- Participate in incident response
+- Grow fellow engineers through reviews and mentoring
+
+Company: Atlassian
+Location: Remote (APAC)
+Type: Full Time
+Salary: USD 130,000 – 180,000 (USD, global comp)

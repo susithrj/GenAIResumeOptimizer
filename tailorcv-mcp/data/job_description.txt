@@ -1,0 +1,27 @@
+Senior Software Engineer(JAVA) - Crypto.com APP/Loyalty
+
+We are a team to design, develop, maintain, and improve software for various ventures projects, i.e., projects that are adjacent to our core businesses and are bootstrapped fast with a lean team. You will be actively involved in the design of various components behind scalable applications, from frontend UI to backend infrastructure.
+
+
+Job Responsibilities
+Responsible for backend system development, making architectural decisions, and participating in the design process;
+Involved in code review, testing, and release work;
+Establish a fast and deployable system with automated testing, continuous integration, and easy delivery;
+Identify issues and implement solutions on backend infrastructure and platforms;
+Analyze and solve problems across the technology stack;
+Work closely with the security team to build and operate a highly secure, scalable infrastructure and backend services;
+Manage all code and functional implementation documentation;
+Collaborate closely with the DevOps team to continuously enhance and improve the technology stack
+
+
+Job Requirement
+Bachelor's degree or higher in Computer Science or a related field
+More than 5 years of work experience with extensive experience in system design and development, capable of independently completing requirement analysis, system design, code development, providing application solutions, and continuously optimizing product quality and system performance;
+Solid foundation in Java programming, familiar with JVM including memory model, class loading mechanism, and performance optimization, and understanding of Java concurrent programming;
+Familiar with mainstream development frameworks, proficient in using Spring, Spring Boot for development, mastery of common design patterns, and practical application experience;
+Proficient in middleware such as RabbitMQ, Kafka, Redis, and databases like MySQL, PostgreSQL, with an understanding of their principles;
+Good coding habits with a self-requirement for unit test coverage;
+High sense of responsibility, strong adaptability and self-learning ability, good communication and collaboration skills, able to independently analyze and solve problems;
+Sensitive to new technologies, with a strong desire to learn, and capable of quickly learning and understanding new technologies;
+Good communication and expression skills, teamwork skills, and self-drive;
+Experience in developing large-scale trading systems or operational systems is preferred

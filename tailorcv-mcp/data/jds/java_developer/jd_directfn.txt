@@ -1,0 +1,32 @@
+Senior Java Developer — DirectFN
+Colombo, Sri Lanka | Full Time
+
+About the Role:
+DirectFN is a leading fintech company providing trading and market data platforms to brokerages and financial institutions across the Middle East and Asia. We are hiring a Senior Java Developer for our platform engineering team.
+
+Requirements:
+- 5+ years Java development experience
+- Spring Boot and Spring Framework
+- Low-latency, high-performance system design
+- FIX protocol knowledge preferred
+- SQL databases (Oracle, MySQL)
+- Redis or Memcached caching
+- Multi-threading and concurrent programming
+- Experience with financial data systems or trading platforms
+
+Nice to have:
+- Experience with market data feeds (Reuters, Bloomberg)
+- Knowledge of financial instruments (equities, derivatives)
+- Arabic language skills (not required)
+- AWS cloud experience
+
+Responsibilities:
+- Develop real-time trading platform components
+- Optimize low-latency data processing pipelines
+- Work with Saudi and GCC-based clients on requirements
+- Participate in 24/7 production support rotation
+- Write technical specifications and design documents
+
+Company: DirectFN
+Location: Colombo, Sri Lanka
+Type: Full Time

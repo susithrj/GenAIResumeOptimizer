@@ -1,0 +1,32 @@
+Java Developer — Orion Health
+Auckland, New Zealand | Full Time
+
+About the Role:
+Orion Health is a global healthcare software company. We are looking for a Java Developer to work on our Amadeus clinical information system used by hospitals across New Zealand, US, and Europe.
+
+Requirements:
+- 3–6 years Java development experience
+- Spring Boot or Java EE
+- RESTful API development and integration
+- SQL databases (Oracle, PostgreSQL)
+- HL7 FHIR healthcare data standard knowledge preferred
+- Experience with secure coding and healthcare data privacy
+- Docker and AWS experience
+
+Nice to have:
+- Experience in healthcare IT (EMR, EHR systems)
+- HL7 v2 or FHIR R4 knowledge
+- New Zealand or Australian healthcare system knowledge
+- SNOMED CT or ICD coding familiarity
+
+Responsibilities:
+- Develop clinical data integration features
+- Build and maintain RESTful FHIR APIs
+- Ensure compliance with healthcare data standards
+- Work closely with clinical informatics team
+- Participate in Agile development ceremonies
+
+Company: Orion Health
+Location: Auckland, New Zealand
+Type: Full Time
+Visa sponsorship available

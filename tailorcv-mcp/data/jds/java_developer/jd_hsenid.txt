@@ -1,0 +1,31 @@
+Java Backend Developer — hSenid Mobile
+Colombo, Sri Lanka | Full Time
+
+About the Role:
+hSenid Mobile Solutions develops telecom and HR software products. We are hiring a Java Backend Developer to work on our flagship HR platform used by enterprises across Asia and Africa.
+
+Requirements:
+- 3–6 years of Java development experience
+- Spring Boot, Spring MVC, Spring Security
+- Hibernate / JPA and relational databases
+- RESTful web service development
+- Experience with microservices
+- Maven or Gradle build tools
+- Git version control
+
+Nice to have:
+- Experience with Angular or React
+- Knowledge of telecom protocols (SMPP, SS7)
+- AWS or GCP cloud experience
+- Docker experience
+
+Responsibilities:
+- Develop new features for the HRPro SaaS platform
+- Maintain and optimize existing backend services
+- Write technical documentation
+- Work closely with QA and frontend teams
+- Participate in Agile ceremonies
+
+Company: hSenid Mobile Solutions
+Location: Colombo, Sri Lanka
+Type: Full Time

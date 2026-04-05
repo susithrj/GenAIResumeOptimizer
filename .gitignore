@@ -6,3 +6,20 @@ tailorcv-mcp/output/
 node_modules/
 dist/
 *.local
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments (local tooling / MCP)
+.mcp-venv/
+.venv/
+.venv-py311
+venv/
+ENV/

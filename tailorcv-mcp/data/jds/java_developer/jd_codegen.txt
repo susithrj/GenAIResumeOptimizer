@@ -1,0 +1,32 @@
+Associate Tech Lead / Senior Java Engineer — Codegen International
+Colombo, Sri Lanka | Full Time
+
+About the Role:
+Codegen is a UK-headquartered software company with a large R&D center in Sri Lanka. We build travel technology products. We are hiring a Senior Java Engineer / Associate Tech Lead to lead a backend engineering pod.
+
+Requirements:
+- 6+ years of Java backend development
+- Spring Boot, REST APIs, microservices
+- Team leadership or tech lead experience
+- AWS cloud services
+- SQL databases (PostgreSQL, MySQL)
+- Docker and container orchestration
+- Strong problem-solving and system design skills
+
+Nice to have:
+- Experience in travel technology domain (GDS, NDC, IATA standards)
+- Knowledge of GraphQL
+- Kafka or RabbitMQ experience
+- Agile team facilitation experience
+
+Responsibilities:
+- Lead a team of 4–6 engineers
+- Drive architectural decisions for backend services
+- Conduct code reviews and enforce coding standards
+- Liaise with UK-based product owners
+- Mentor engineers and support career growth
+- Manage sprint delivery as Scrum Master
+
+Company: Codegen International
+Location: Colombo, Sri Lanka
+Type: Full Time
