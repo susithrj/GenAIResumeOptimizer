@@ -1,7 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { optimizeResume } from '../api/optimize'
-import { buildHighlightedHtml } from '../lib/highlight'
 import type { KeywordChip, OptimizeResponse } from '../types/api'
+import { ResumeDocument } from './resume/ResumeDocument'
+import { parseResumeText } from '../lib/resume/parseResumeText'
+import { annotateDiffText } from '../lib/diff/annotateDiffText'
+import type { ResumeDoc } from '../lib/resume/types'
 
 const CV_PLACEHOLDER = `Paste your CV text here...
 
@@ -36,26 +39,39 @@ export function ToolSection({ onToast }: ToolSectionProps) {
   const [targetRole, setTargetRole] = useState('java_developer')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<OptimizeResponse | null>(null)
-  const [outputTab, setOutputTab] = useState<'rewritten' | 'keywords'>('rewritten')
-  const [highlightsOn, setHighlightsOn] = useState(true)
   const [copyLabel, setCopyLabel] = useState('⎘ Copy optimized CV')
+  const [outputTab, setOutputTab] = useState<'compare' | 'keywords'>('compare')
+
+  const [cvViewMode, setCvViewMode] = useState<'preview' | 'edit'>('edit')
+  const [showOutput, setShowOutput] = useState(false)
+  const [staleMessage, setStaleMessage] = useState<string | null>(null)
+
+  const optimizedSnapshotCv = useRef<string>('') // CV at the moment Optimize was clicked
+  const originalPanelBodyRef = useRef<HTMLDivElement | null>(null)
+  const optimizedPanelBodyRef = useRef<HTMLDivElement | null>(null)
 
   const cvReady = cv.trim().length > 0
   const jdReady = jd.trim().length > 0
+  const optimizedReady = (result?.rewritten_resume_text?.trim()?.length ?? 0) > 0
 
-  const wordsToHighlight = useMemo(() => {
-    if (!result) return []
-    return result.keywords.filter((k) => k.status === 'added' || k.status === 'found').map((k) => k.word)
-  }, [result])
+  const originalDoc = useMemo(() => (cvReady ? parseResumeText(cv) : null), [cv, cvReady])
 
-  const displayHtml = useMemo(() => {
-    if (!result?.rewritten_resume_text) return ''
-    const plain = result.rewritten_resume_text
-    if (!highlightsOn || wordsToHighlight.length === 0) {
-      return plain.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>')
-    }
-    return buildHighlightedHtml(plain, wordsToHighlight).replace(/\n/g, '<br/>')
-  }, [result, highlightsOn, wordsToHighlight])
+  const optimizedAnnotatedText = useMemo(() => {
+    if (!optimizedReady) return null
+    const base = optimizedSnapshotCv.current?.trim() ? optimizedSnapshotCv.current : cv
+    return annotateDiffText(base, result!.rewritten_resume_text)
+  }, [cv, optimizedReady, result])
+
+  const optimizedDoc = useMemo(() => {
+    if (!optimizedAnnotatedText) return null
+    return parseResumeText(optimizedAnnotatedText)
+  }, [optimizedAnnotatedText])
+
+  const optimizedDocWithHeader = useMemo(() => {
+    if (!optimizedDoc) return null
+    if (!originalDoc) return optimizedDoc
+    return mergeHeader(originalDoc, optimizedDoc)
+  }, [optimizedDoc, originalDoc])
 
   const runAnalysis = useCallback(async () => {
     if (!cv.trim() || !jd.trim()) {
@@ -64,7 +80,9 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     }
     setLoading(true)
     setResult(null)
-    setOutputTab('rewritten')
+    setOutputTab('compare')
+    setStaleMessage(null)
+    optimizedSnapshotCv.current = cv.trim()
     try {
       const data = await optimizeResume({
         resume_text: cv.trim(),
@@ -72,8 +90,6 @@ export function ToolSection({ onToast }: ToolSectionProps) {
         target_role: targetRole.trim() || 'java_developer',
       })
       setResult(data)
-      const canHighlight = data.keywords.some((k) => k.status === 'added' || k.status === 'found')
-      setHighlightsOn(canHighlight)
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Something went wrong — please try again'
       onToast(msg)
@@ -99,8 +115,11 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     setJd('')
     setResult(null)
     setCopyLabel('⎘ Copy optimized CV')
-    setOutputTab('rewritten')
-    setHighlightsOn(true)
+    setOutputTab('compare')
+    setCvViewMode('edit')
+    setShowOutput(false)
+    setStaleMessage(null)
+    optimizedSnapshotCv.current = ''
   }, [])
 
   const scoreLabel =
@@ -122,10 +141,19 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     loading ? 'output-status-badge' : result != null ? 'output-status-badge ready' : 'output-status-badge'
 
   useEffect(() => {
-    if (result && wordsToHighlight.length === 0) {
-      setHighlightsOn(false)
-    }
-  }, [result, wordsToHighlight.length])
+    if (!cvReady) return
+    setShowOutput(true)
+    setCvViewMode('preview')
+  }, [cvReady])
+
+  useEffect(() => {
+    if (outputTab !== 'compare') return
+    // Ensure the user sees the resume header first (name/contact).
+    const a = originalPanelBodyRef.current
+    const b = optimizedPanelBodyRef.current
+    if (a) a.scrollTop = 0
+    if (b) b.scrollTop = 0
+  }, [outputTab, cvViewMode, originalDoc, optimizedDocWithHeader])
 
   return (
     <section className="tool-section" id="tool">
@@ -143,6 +171,11 @@ export function ToolSection({ onToast }: ToolSectionProps) {
             id="cv-input"
             value={cv}
             onChange={(e) => setCv(e.target.value)}
+            onPaste={() => {
+              // Resume preview should appear immediately on paste.
+              setShowOutput(true)
+              setCvViewMode('preview')
+            }}
             placeholder={CV_PLACEHOLDER}
             aria-label="Your CV"
           />
@@ -221,10 +254,10 @@ export function ToolSection({ onToast }: ToolSectionProps) {
           <div className="output-tabs">
             <button
               type="button"
-              className={outputTab === 'rewritten' ? 'tab-btn active' : 'tab-btn'}
-              onClick={() => setOutputTab('rewritten')}
+              className={outputTab === 'compare' ? 'tab-btn active' : 'tab-btn'}
+              onClick={() => setOutputTab('compare')}
             >
-              Rewritten CV
+              Compare
             </button>
             <button
               type="button"
@@ -239,46 +272,122 @@ export function ToolSection({ onToast }: ToolSectionProps) {
           </div>
         </div>
 
-        <div className={`output-body tab-${outputTab}`}>
-          <div
-            className="output-text"
-            id="output-text"
-            style={{ whiteSpace: 'pre-wrap' as const }}
-          >
-            {result == null ? (
+        {outputTab === 'compare' ? (
+          <div className="compare-body">
+            {!showOutput ? (
               <div className="output-placeholder">
                 <div className="icon">✦</div>
-                <p>Your optimized CV will appear here</p>
-                <small>Paste your CV and job description above, then click Optimize</small>
+                <p>Your resume preview will appear here</p>
+                <small>Paste your CV above to see the structured preview instantly</small>
               </div>
             ) : (
-              <div dangerouslySetInnerHTML={{ __html: displayHtml }} />
+              <div className="compare-grid">
+                <div className="compare-panel">
+                  <div className="panel-stats">
+                    <div className="panel-title">Original</div>
+                    <div className="panel-metrics">{cvReady ? `${countWords(cv)} words` : '—'}</div>
+                    <div className="panel-actions">
+                      {cvViewMode === 'preview' ? (
+                        <button
+                          type="button"
+                          className="btn-outline btn-sm"
+                          onClick={() => {
+                            setCvViewMode('edit')
+                            if (result != null) {
+                              setResult(null)
+                              setStaleMessage('Re-optimize to see updated results')
+                              setCopyLabel('⎘ Copy optimized CV')
+                            }
+                          }}
+                        >
+                          Edit
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn-outline btn-sm"
+                          onClick={() => {
+                            setCvViewMode('preview')
+                            setShowOutput(true)
+                          }}
+                        >
+                          Done
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="panel-body" ref={cvViewMode === 'preview' ? originalPanelBodyRef : undefined}>
+                    {cvViewMode === 'edit' ? (
+                      <textarea
+                        className="panel-editor"
+                        value={cv}
+                        onChange={(e) => setCv(e.target.value)}
+                        placeholder={CV_PLACEHOLDER}
+                        aria-label="Edit resume text"
+                      />
+                    ) : originalDoc ? (
+                      <ResumeDocument doc={originalDoc} />
+                    ) : (
+                      <div className="panel-empty">Paste your CV above to preview it here.</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="compare-panel">
+                  <div className="panel-stats">
+                    <div className="panel-title">Optimized</div>
+                    <div className="panel-metrics">
+                      {result != null ? (
+                        <>
+                          <span>{`${countAddedKeywords(result.keywords)} keywords added`}</span>
+                          <span className="dot">•</span>
+                          <span>{`${result.ats_score}% ATS`}</span>
+                        </>
+                      ) : (
+                        '—'
+                      )}
+                    </div>
+                    <div className="panel-actions">
+                      <button
+                        type="button"
+                        className={`btn-copy btn-sm${copyLabel.startsWith('✓') ? ' copied' : ''}`}
+                        onClick={copyOutput}
+                        disabled={result == null}
+                        title={result == null ? 'Run Optimize to enable copy' : 'Copy optimized resume text'}
+                      >
+                        {copyLabel}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="panel-body" ref={result != null ? optimizedPanelBodyRef : undefined}>
+                    {result == null ? (
+                      <div className="panel-stale">
+                        <div className="panel-stale-title">
+                          {staleMessage ?? 'Optimize to see your improved resume'}
+                        </div>
+                        <div className="panel-stale-sub">
+                          Paste your job description above, then click Optimize.
+                        </div>
+                      </div>
+                    ) : optimizedDoc ? (
+                      <ResumeDocument doc={optimizedDocWithHeader ?? optimizedDoc} />
+                    ) : (
+                      <div className="panel-empty">Generating optimized preview…</div>
+                    )}
+                  </div>
+                </div>
+              </div>
             )}
           </div>
-
-          <KeywordSidebar chips={result?.keywords ?? null} />
-        </div>
+        ) : (
+          <div className="keywords-body">
+            <KeywordSidebar chips={result?.keywords ?? null} />
+          </div>
+        )}
 
         <div className="output-actions">
-          <button
-            type="button"
-            className={`btn-copy${copyLabel.startsWith('✓') ? ' copied' : ''}`}
-            id="copy-btn"
-            onClick={copyOutput}
-          >
-            {copyLabel}
-          </button>
-          {result != null && wordsToHighlight.length > 0 ? (
-            <button
-              type="button"
-              className={highlightsOn ? 'highlight-toggle active' : 'highlight-toggle'}
-              id="highlight-toggle"
-              onClick={() => setHighlightsOn((v) => !v)}
-            >
-              <span className="dot" />
-              {highlightsOn ? 'Highlights on' : 'Highlights off'}
-            </button>
-          ) : null}
           <button type="button" className="btn-clear" onClick={clearAll}>
             ↺ Start over
           </button>
@@ -316,4 +425,47 @@ function KeywordSidebar({ chips }: { chips: KeywordChip[] | null }) {
       ))}
     </div>
   )
+}
+
+function countWords(text: string): number {
+  const t = text.trim()
+  if (!t) return 0
+  return t.split(/\s+/).filter(Boolean).length
+}
+
+function countAddedKeywords(chips: KeywordChip[]): number {
+  const unique = new Set(chips.filter((k) => k.status === 'added').map((k) => k.word.trim().toLowerCase()).filter(Boolean))
+  return unique.size
+}
+
+function mergeHeader(original: ResumeDoc, optimized: ResumeDoc): ResumeDoc {
+  const name = optimized.name?.trim() ? optimized.name : original.name
+
+  const contactLines =
+    optimized.contactLines.length > 0 ? optimized.contactLines : original.contactLines
+
+  const summaryLines =
+    optimized.summaryLines.length > 0 ? optimized.summaryLines : original.summaryLines
+
+  // Avoid accidental duplication when optimized already contains identical header lines.
+  const dedupe = (xs: string[]) => {
+    const seen = new Set<string>()
+    const out: string[] = []
+    for (const x of xs) {
+      const k = x.trim()
+      if (!k) continue
+      const key = k.toLowerCase()
+      if (seen.has(key)) continue
+      seen.add(key)
+      out.push(x)
+    }
+    return out
+  }
+
+  return {
+    ...optimized,
+    name,
+    contactLines: dedupe(contactLines),
+    summaryLines: dedupe(summaryLines),
+  }
 }
