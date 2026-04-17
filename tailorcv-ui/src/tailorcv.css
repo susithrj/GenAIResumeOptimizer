@@ -717,6 +717,65 @@ h1 em::after {
   line-height: 1.55;
 }
 
+/* Offscreen export target for PDF generation */
+.export-sandbox {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  opacity: 1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.export-root {
+  width: 794px; /* A4 @ 96dpi */
+  padding: 56px 56px 64px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  /* Lock export colors regardless of app theme vars */
+  --text-primary: #000;
+  --text-secondary: #000;
+  --text-hint: #000;
+  --border: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.18);
+}
+
+/* Ensure PDF export snapshots don't capture in-progress animations/transitions */
+.export-root,
+.export-root * {
+  animation: none !important;
+  transition: none !important;
+  filter: none !important;
+}
+
+.export-root .resume-shell {
+  color: #000;
+}
+
+.export-root .resume-contact {
+  color: #000;
+}
+
+.export-root .resume-section-title {
+  color: #000;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+}
+
+.export-root .resume-paragraph,
+.export-root .resume-bullets li,
+.export-root .resume-bullets li::before {
+  color: #000 !important;
+  opacity: 1 !important;
+}
+
+.export-root .resume-section,
+.export-root .resume-summary,
+.export-root .resume-bullets {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
 .resume-name {
   font-family: 'Syne', sans-serif;
   font-weight: 800;

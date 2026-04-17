@@ -116,27 +116,43 @@ function stripBulletPrefix(line: string): string {
   return line.replace(/^\s*([•*-]|\u2022)\s+/, '').trim()
 }
 
-function isLikelyNameLine(line: string): boolean {
+function extractLikelyName(line: string): string | null {
+  const isLikelyNameCore = (rawLine: string): boolean => {
+    const raw = rawLine.trim()
+    if (!raw) return false
+    if (raw.length > 60) return false
+    // Don't treat well-known section headers as names.
+    const lc = raw.replace(/[:\-–—]+$/, '').trim().toLowerCase()
+    if (KNOWN_SECTION_TITLES.has(lc)) return false
+    if (SECTION_KEYWORDS.some((k) => lc.includes(k))) return false
+    if (isLikelyContactLine(raw)) return false
+    if (/\d/.test(raw)) return false
+    const words = raw.split(/\s+/).filter(Boolean)
+    if (words.length < 2 || words.length > 5) return false
+    const titleCase = words.every((w) => /^[A-Z][a-z'.-]+$/.test(w))
+    if (titleCase) return true
+
+    // Accept ALL-CAPS names like "SUSITH HEMATHILAKA"
+    const lettersOnly = raw.replace(/[^A-Za-z]/g, '')
+    const allCaps = lettersOnly.length >= 6 && lettersOnly === lettersOnly.toUpperCase()
+    if (allCaps) return true
+
+    return false
+  }
+
   const raw = line.trim()
-  if (!raw) return false
-  if (raw.length > 60) return false
-  // Don't treat well-known section headers as names.
-  const lc = raw.replace(/[:\-–—]+$/, '').trim().toLowerCase()
-  if (KNOWN_SECTION_TITLES.has(lc)) return false
-  if (SECTION_KEYWORDS.some((k) => lc.includes(k))) return false
-  if (isLikelyContactLine(raw)) return false
-  if (/\d/.test(raw)) return false
-  const words = raw.split(/\s+/).filter(Boolean)
-  if (words.length < 2 || words.length > 5) return false
-  const titleCase = words.every((w) => /^[A-Z][a-z'.-]+$/.test(w))
-  if (titleCase) return true
+  if (!raw) return null
 
-  // Accept ALL-CAPS names like "SUSITH HEMATHILAKA"
-  const lettersOnly = raw.replace(/[^A-Za-z]/g, '')
-  const allCaps = lettersOnly.length >= 6 && lettersOnly === lettersOnly.toUpperCase()
-  if (allCaps) return true
+  // Common pattern: "NAME | Senior Backend Engineer | ..."
+  // Extract the left-most segment and treat that as the candidate name.
+  const firstSegment = raw.split(/[|]/)[0]?.trim()
+  if (firstSegment && firstSegment !== raw && isLikelyNameCore(firstSegment)) return firstSegment
 
-  return false
+  // Common pattern: "NAME — Senior Backend Engineer" / "NAME - Senior Backend Engineer"
+  const dashSplit = raw.split(/\s+[–—-]\s+/)[0]?.trim()
+  if (dashSplit && dashSplit !== raw && isLikelyNameCore(dashSplit)) return dashSplit
+
+  return isLikelyNameCore(raw) ? raw : null
 }
 
 function isMonthToken(s: string): boolean {
@@ -231,9 +247,10 @@ export function parseResumeText(input: string): ResumeDoc {
 
   const firstNonEmptyIdx = lines.findIndex((l) => l.trim().length > 0)
   const firstLine = firstNonEmptyIdx >= 0 ? lines[firstNonEmptyIdx].trim() : ''
+  const firstName = extractLikelyName(firstLine)
 
   const doc: ResumeDoc = {
-    name: isLikelyNameLine(firstLine) ? firstLine : undefined,
+    name: firstName ?? undefined,
     contactLines: [],
     summaryLines: [],
     sections: [],
@@ -250,8 +267,9 @@ export function parseResumeText(input: string): ResumeDoc {
     const l = (lines[i] ?? '').trim()
     if (!l) continue
 
-    if (!doc.name && isLikelyNameLine(l)) {
-      doc.name = l
+    const extracted = extractLikelyName(l)
+    if (!doc.name && extracted) {
+      doc.name = extracted
       continue
     }
 

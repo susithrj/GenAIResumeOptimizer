@@ -5,6 +5,7 @@ import { ResumeDocument } from './resume/ResumeDocument'
 import { parseResumeText } from '../lib/resume/parseResumeText'
 import { annotateDiffText } from '../lib/diff/annotateDiffText'
 import type { ResumeDoc } from '../lib/resume/types'
+import { exportElementToPdf } from '../lib/export/exportElementToPdf'
 
 const CV_PLACEHOLDER = `Paste your CV text here...
 
@@ -40,6 +41,7 @@ export function ToolSection({ onToast }: ToolSectionProps) {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<OptimizeResponse | null>(null)
   const [copyLabel, setCopyLabel] = useState('⎘ Copy optimized CV')
+  const [exportingPdf, setExportingPdf] = useState(false)
   const [outputTab, setOutputTab] = useState<'compare' | 'keywords'>('compare')
 
   const [cvViewMode, setCvViewMode] = useState<'preview' | 'edit'>('edit')
@@ -49,6 +51,7 @@ export function ToolSection({ onToast }: ToolSectionProps) {
   const optimizedSnapshotCv = useRef<string>('') // CV at the moment Optimize was clicked
   const originalPanelBodyRef = useRef<HTMLDivElement | null>(null)
   const optimizedPanelBodyRef = useRef<HTMLDivElement | null>(null)
+  const exportOptimizedRef = useRef<HTMLDivElement | null>(null)
 
   const cvReady = cv.trim().length > 0
   const jdReady = jd.trim().length > 0
@@ -72,6 +75,15 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     if (!originalDoc) return optimizedDoc
     return mergeHeader(originalDoc, optimizedDoc)
   }, [optimizedDoc, originalDoc])
+
+  const optimizedCleanDocWithHeader = useMemo(() => {
+    if (!optimizedReady) return null
+    const raw = result!.rewritten_resume_text?.trim() ?? ''
+    if (!raw) return null
+    const clean = parseResumeText(raw)
+    if (!originalDoc) return clean
+    return mergeHeader(originalDoc, clean)
+  }, [optimizedReady, result, originalDoc])
 
   const runAnalysis = useCallback(async () => {
     if (!cv.trim() || !jd.trim()) {
@@ -110,6 +122,26 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     })
   }, [result, onToast])
 
+  const downloadPdf = useCallback(async () => {
+    const el = exportOptimizedRef.current
+    if (!el || !optimizedReady) {
+      onToast('Run Optimize first to enable export')
+      return
+    }
+
+    const name = (optimizedCleanDocWithHeader?.name ?? 'resume').trim() || 'resume'
+    const safe = name.replace(/[^\w\d-_]+/g, '_').slice(0, 60)
+    setExportingPdf(true)
+    try {
+      await exportElementToPdf(el, `TailorCV_${safe}.pdf`)
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Could not export PDF — please try again'
+      onToast(msg)
+    } finally {
+      setExportingPdf(false)
+    }
+  }, [onToast, optimizedReady, optimizedCleanDocWithHeader])
+
   const clearAll = useCallback(() => {
     setCv('')
     setJd('')
@@ -120,6 +152,7 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     setShowOutput(false)
     setStaleMessage(null)
     optimizedSnapshotCv.current = ''
+    setExportingPdf(false)
   }, [])
 
   const scoreLabel =
@@ -358,6 +391,15 @@ export function ToolSection({ onToast }: ToolSectionProps) {
                       >
                         {copyLabel}
                       </button>
+                      <button
+                        type="button"
+                        className="btn-outline btn-sm"
+                        onClick={() => void downloadPdf()}
+                        disabled={result == null || exportingPdf}
+                        title={result == null ? 'Run Optimize to enable export' : 'Download a PDF that preserves layout'}
+                      >
+                        {exportingPdf ? 'Preparing PDF…' : '⬇ Download PDF'}
+                      </button>
                     </div>
                   </div>
 
@@ -393,6 +435,15 @@ export function ToolSection({ onToast }: ToolSectionProps) {
           </button>
         </div>
       </div>
+
+      {/* Offscreen export target (clean text, layout preserved) */}
+      {optimizedCleanDocWithHeader ? (
+        <div className="export-sandbox" aria-hidden="true">
+          <div className="export-root" ref={exportOptimizedRef}>
+            <ResumeDocument doc={optimizedCleanDocWithHeader} />
+          </div>
+        </div>
+      ) : null}
     </section>
   )
 }
@@ -439,7 +490,17 @@ function countAddedKeywords(chips: KeywordChip[]): number {
 }
 
 function mergeHeader(original: ResumeDoc, optimized: ResumeDoc): ResumeDoc {
-  const name = optimized.name?.trim() ? optimized.name : original.name
+  const looksLikeHeadline = (s: string | undefined) => {
+    const t = s?.trim()
+    if (!t) return false
+    // Often the first line is a role headline: "Senior Backend Engineer | Java | ..."
+    if (t.includes('|') || t.includes('·')) return true
+    if (/\b(engineer|developer|architect|manager|lead|consultant|specialist)\b/i.test(t)) return true
+    return false
+  }
+
+  const name =
+    optimized.name?.trim() && !looksLikeHeadline(optimized.name) ? optimized.name : original.name
 
   const contactLines =
     optimized.contactLines.length > 0 ? optimized.contactLines : original.contactLines
