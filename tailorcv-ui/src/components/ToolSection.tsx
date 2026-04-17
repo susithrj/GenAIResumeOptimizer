@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { optimizeResume } from '../api/optimize'
-import type { KeywordChip, OptimizeResponse } from '../types/api'
+import { scoreResume } from '../api/score'
+import type { KeywordChip, OptimizeResponse, ScoreResponse } from '../types/api'
 import { ResumeDocument } from './resume/ResumeDocument'
 import { parseResumeText } from '../lib/resume/parseResumeText'
 import { annotateDiffText } from '../lib/diff/annotateDiffText'
@@ -40,6 +41,10 @@ export function ToolSection({ onToast }: ToolSectionProps) {
   const [targetRole, setTargetRole] = useState('java_developer')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<OptimizeResponse | null>(null)
+  const [baselineScore, setBaselineScore] = useState<number | null>(null)
+  const [optimizedScore, setOptimizedScore] = useState<number | null>(null)
+  const [scoring, setScoring] = useState(false)
+  const [scoreError, setScoreError] = useState<string | null>(null)
   const [copyLabel, setCopyLabel] = useState('⎘ Copy optimized CV')
   const [exportingPdf, setExportingPdf] = useState(false)
   const [outputTab, setOutputTab] = useState<'compare' | 'keywords'>('compare')
@@ -49,6 +54,7 @@ export function ToolSection({ onToast }: ToolSectionProps) {
   const [staleMessage, setStaleMessage] = useState<string | null>(null)
 
   const optimizedSnapshotCv = useRef<string>('') // CV at the moment Optimize was clicked
+  const scoreReqIdRef = useRef(0)
   const originalPanelBodyRef = useRef<HTMLDivElement | null>(null)
   const optimizedPanelBodyRef = useRef<HTMLDivElement | null>(null)
   const exportOptimizedRef = useRef<HTMLDivElement | null>(null)
@@ -85,6 +91,28 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     return mergeHeader(originalDoc, clean)
   }, [optimizedReady, result, originalDoc])
 
+  const runScore = useCallback(async (resumeText: string, jdText: string): Promise<ScoreResponse | null> => {
+    const myId = ++scoreReqIdRef.current
+    setScoring(true)
+    setScoreError(null)
+    try {
+      const data = await scoreResume({
+        resume_text: resumeText.trim(),
+        job_description: jdText.trim(),
+      })
+      // Ignore stale responses.
+      if (myId !== scoreReqIdRef.current) return null
+      return data
+    } catch (e) {
+      if (myId !== scoreReqIdRef.current) return null
+      const msg = e instanceof Error ? e.message : 'Could not compute score'
+      setScoreError(msg)
+      return null
+    } finally {
+      if (myId === scoreReqIdRef.current) setScoring(false)
+    }
+  }, [])
+
   const runAnalysis = useCallback(async () => {
     if (!cv.trim() || !jd.trim()) {
       onToast(`Please paste your ${!cv.trim() ? 'CV' : 'job description'} first`)
@@ -92,6 +120,7 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     }
     setLoading(true)
     setResult(null)
+    setOptimizedScore(null)
     setOutputTab('compare')
     setStaleMessage(null)
     optimizedSnapshotCv.current = cv.trim()
@@ -102,6 +131,8 @@ export function ToolSection({ onToast }: ToolSectionProps) {
         target_role: targetRole.trim() || 'java_developer',
       })
       setResult(data)
+      // Use the optimize endpoint's score as the "new" score to avoid an extra request.
+      setOptimizedScore(data.ats_score)
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Something went wrong — please try again'
       onToast(msg)
@@ -146,6 +177,10 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     setCv('')
     setJd('')
     setResult(null)
+    setBaselineScore(null)
+    setOptimizedScore(null)
+    setScoreError(null)
+    setScoring(false)
     setCopyLabel('⎘ Copy optimized CV')
     setOutputTab('compare')
     setCvViewMode('edit')
@@ -155,18 +190,31 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     setExportingPdf(false)
   }, [])
 
+  // Keep the main score circle showing the ORIGINAL score.
+  const displayedScore = baselineScore
+  const delta =
+    baselineScore != null && optimizedScore != null ? optimizedScore - baselineScore : null
+
   const scoreLabel =
-    result != null
-      ? `ATS alignment: ${result.ats_score}%`
-      : 'ATS alignment'
+    delta != null
+      ? `ATS alignment: ${baselineScore}% → ${optimizedScore}% (${delta >= 0 ? '+' : ''}${delta})`
+      : displayedScore != null
+        ? `ATS alignment: ${displayedScore}%`
+        : 'ATS alignment'
   const scoreSub =
-    result != null
-      ? 'Score reflects your pasted CV vs this job description (see rewritten output below).'
-      : 'Run analysis to see your score'
+    scoreError
+      ? 'Could not compute score — you can still optimize.'
+      : scoring
+        ? 'Scoring your CV vs this job description…'
+        : baselineScore != null && result == null
+          ? 'Original score (before optimization)'
+          : result != null
+            ? 'New score shown after optimization.'
+            : 'Paste CV + job description to see your score'
 
   const scoreCircleClass =
-    loading ? 'score-circle scoring' : result != null ? 'score-circle scored' : 'score-circle'
-  const scoreCircleText = loading ? '' : result != null ? `${result.ats_score}%` : '—'
+    loading || scoring ? 'score-circle scoring' : displayedScore != null ? 'score-circle scored' : 'score-circle'
+  const scoreCircleText = loading || scoring ? '' : displayedScore != null ? `${displayedScore}%` : '—'
 
   const statusBadge =
     loading ? 'Processing…' : result != null ? '✓ Optimized' : 'Waiting for input'
@@ -178,6 +226,24 @@ export function ToolSection({ onToast }: ToolSectionProps) {
     setShowOutput(true)
     setCvViewMode('preview')
   }, [cvReady])
+
+  useEffect(() => {
+    // Debounced baseline scoring.
+    if (!cvReady || !jdReady) {
+      setBaselineScore(null)
+      setScoreError(null)
+      return
+    }
+
+    const t = window.setTimeout(() => {
+      void runScore(cv, jd).then((data) => {
+        if (!data) return
+        setBaselineScore(data.ats_score)
+      })
+    }, 900)
+
+    return () => window.clearTimeout(t)
+  }, [cv, jd, cvReady, jdReady, runScore])
 
   useEffect(() => {
     if (outputTab !== 'compare') return
@@ -318,7 +384,17 @@ export function ToolSection({ onToast }: ToolSectionProps) {
                 <div className="compare-panel">
                   <div className="panel-stats">
                     <div className="panel-title">Original</div>
-                    <div className="panel-metrics">{cvReady ? `${countWords(cv)} words` : '—'}</div>
+                    <div className="panel-metrics">
+                      {cvReady ? (
+                        <>
+                          <span>{`${countWords(cv)} words`}</span>
+                          <span className="dot">•</span>
+                          <span>{baselineScore != null ? `${baselineScore}% ATS` : 'ATS —'}</span>
+                        </>
+                      ) : (
+                        '—'
+                      )}
+                    </div>
                     <div className="panel-actions">
                       {cvViewMode === 'preview' ? (
                         <button
@@ -328,6 +404,7 @@ export function ToolSection({ onToast }: ToolSectionProps) {
                             setCvViewMode('edit')
                             if (result != null) {
                               setResult(null)
+                              setOptimizedScore(null)
                               setStaleMessage('Re-optimize to see updated results')
                               setCopyLabel('⎘ Copy optimized CV')
                             }
@@ -375,7 +452,7 @@ export function ToolSection({ onToast }: ToolSectionProps) {
                         <>
                           <span>{`${countAddedKeywords(result.keywords)} keywords added`}</span>
                           <span className="dot">•</span>
-                          <span>{`${result.ats_score}% ATS`}</span>
+                          <span>{optimizedScore != null ? `${optimizedScore}% ATS` : 'ATS —'}</span>
                         </>
                       ) : (
                         '—'

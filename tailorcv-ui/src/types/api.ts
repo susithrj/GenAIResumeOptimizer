@@ -27,3 +27,13 @@ export interface OptimizeResponse {
   rewritten_resume_text: string
   keywords: KeywordChip[]
 }
+
+/** Mirrors POST /api/score response from tailorcv-mcp/api.py */
+export interface ScoreResponse {
+  ats_score: number
+  covered: string[]
+  missing: string[]
+  phrase_count: number
+  covered_count: number
+  threshold: number
+}

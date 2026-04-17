@@ -18,6 +18,7 @@ from agents.gap_analyzer import analyze_gaps
 from agents.jd_parser import parse_jd
 from agents.parser import parse_resume
 from agents.rewriter import rewrite_resume
+from score import score_resume_against_jd
 from utils.text_merge import build_merged_resume_text, normalize_newlines
 
 _pkg = Path(__file__).resolve().parent
@@ -71,6 +72,20 @@ class OptimizeResponse(BaseModel):
     keywords: list[KeywordChip]
 
 
+class ScoreRequest(BaseModel):
+    resume_text: str = Field(..., min_length=1, description="Plain text resume body")
+    job_description: str = Field(..., min_length=1, description="Job description text")
+
+
+class ScoreResponse(BaseModel):
+    ats_score: int
+    covered: list[str]
+    missing: list[str]
+    phrase_count: int
+    covered_count: int
+    threshold: float
+
+
 def _build_keyword_chips(gaps_dump: dict, rewrite_dump: dict) -> list[KeywordChip]:
     """Derive chips for the UI: added from rewrites, found/missing from gap report."""
     by_key: dict[str, KeywordChip] = {}
@@ -104,6 +119,25 @@ def _build_keyword_chips(gaps_dump: dict, rewrite_dump: dict) -> list[KeywordChi
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok"}
+
+
+@app.post("/api/score", response_model=ScoreResponse)
+def score(body: ScoreRequest) -> ScoreResponse:
+    try:
+        res = score_resume_against_jd(
+            resume_text=normalize_newlines(body.resume_text),
+            job_description=normalize_newlines(body.job_description),
+        )
+        return ScoreResponse(
+            ats_score=res.ats_score,
+            covered=res.covered,
+            missing=res.missing,
+            phrase_count=res.phrase_count,
+            covered_count=res.covered_count,
+            threshold=res.threshold,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 @app.post("/api/optimize", response_model=OptimizeResponse)
